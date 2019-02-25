@@ -215,6 +215,9 @@ private:
   // Suppress all diagnostics.
   bool SuppressAllDiagnostics = false;
 
+  // Suppress all notes.
+  bool SuppressAllNotes = true;
+
   // Elide common types of templates.
   bool ElideType = true;
 
@@ -633,6 +636,12 @@ public:
     SuppressAllDiagnostics = Val;
   }
   bool getSuppressAllDiagnostics() const { return SuppressAllDiagnostics; }
+
+  /// Suppress all notes, to silence the front end when the user has a brain
+  void setSuppressAllNotes(bool Val = true) {
+    SuppressAllNotes = Val;
+  }
+  bool getSuppressAllNotes() const { return SuppressAllNotes; }
 
   /// Set type eliding, to skip outputting same types occurring in
   /// template types.

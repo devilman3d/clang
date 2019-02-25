@@ -44,6 +44,7 @@ void clang::ProcessWarningOptions(DiagnosticsEngine &Diags,
                                   const DiagnosticOptions &Opts,
                                   bool ReportDiags) {
   Diags.setSuppressSystemWarnings(true);  // Default to -Wno-system-headers
+  Diags.setSuppressAllNotes(false);		  // Default to -Wclang-notes
   Diags.setIgnoreAllWarnings(Opts.IgnoreWarnings);
   Diags.setShowOverloads(Opts.getShowOverloads());
 
@@ -105,6 +106,13 @@ void clang::ProcessWarningOptions(DiagnosticsEngine &Diags,
       // diagnostic to a warning, if -Wno-foo, map it to ignore.
       diag::Severity Mapping =
           isPositive ? diag::Severity::Warning : diag::Severity::Ignored;
+
+	  // -Wno-clang-notes
+      if (Opt == "clang-notes") {
+        if (SetDiagnostic)
+          Diags.setSuppressAllNotes(!isPositive);
+        continue;
+      }
 
       // -Wsystem-headers is a special case, not driven by the option table.  It
       // cannot be controlled with -Werror.
